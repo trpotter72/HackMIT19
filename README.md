@@ -1,1 +1,2 @@
-# HackMIT19
+# StakeTogether.org
+## Democratizing Property Investments
