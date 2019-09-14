@@ -5,18 +5,19 @@ import TextField from '@material-ui/core/TextField';
 class Search extends React.Component {
     render () {
         return (
-            <div style = {{margin: 'auto'}}>
-                <form className="Search" noValidate autoComplete="off" style={{float: 'left'}}>
+            <div>
+                <form className="Search" noValidate autoComplete="off" style={{float: 'left', color:'white'}}>
                     <TextField
                         id="outlined-with-placeholder"
-                        label="With placeholder"
-                        placeholder="Placeholder"
+                        label="Enter Zipcode"
+                        //placeholder="Placeholder"
                         className="text"
                         margin="normal"
                         variant="outlined"
+                        //color="white"
                     />
                 </form>
-                <Button variant="contained" color="primary" style={{float: 'right', top: '50%'}}>
+                <Button variant="contained" color="primary" style={{float: 'right', top: '50%', marginTop:'25px', marginLeft:'10px'}}>
                     Search
                 </Button>
             </div>
