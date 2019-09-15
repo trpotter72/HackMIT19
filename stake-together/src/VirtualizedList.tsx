@@ -18,14 +18,27 @@ const useStyles = makeStyles(theme => ({
 
 function Row(props: any) {
   const addresses = props.addressData;
-  const listItems = addresses.map((element : any) =>
-    <ListItem button key={element.address}>
-      <ListItemText primary={element.address} secondary={element.price}/>
-      <ListItemIcon>
-        <img src={props.image} alt="" style={{float: 'left', height: '30px', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '5px', paddingRight: '5px'}}></img>
-      </ListItemIcon>
-    </ListItem>
-  );
+  let listItems = [];
+  if (addresses){
+    listItems = addresses.map((element : any) =>
+      <ListItem button key={element.address}>
+        <ListItemText primary={element.address} secondary={element.price}/>
+        <ListItemIcon>
+          <img src={props.image} alt="" style={{float: 'left', height: '30px', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '5px', paddingRight: '5px'}}></img>
+        </ListItemIcon>
+      </ListItem>
+    );
+  }
+  else {
+    for (let i = 0; i < 10; i++){
+      listItems.push(<ListItem button key={"Address"}>
+        <ListItemText primary={"Address"} secondary={"Price"}/>
+        <ListItemIcon>
+          <img src="https://amp.businessinsider.com/images/5bdc87448c35ab6a120935eb-1334-1001.jpg" alt="" style={{float: 'left', height: '30px', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '5px', paddingRight: '5px'}}></img>
+        </ListItemIcon>
+      </ListItem>)
+    }
+  }
   return (
     listItems
   );
