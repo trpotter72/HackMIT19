@@ -6,9 +6,9 @@ import GoogleMap from './GoogleMap';
 
 export default function MapScreen(props: any) {
     const [radius, updateRadius] = useState('0')
-    const [priceRange, updatePriceRange] = useState("")
-    const [bedrooms, updateBedrooms] = useState('0')
-    const [bathrooms, updateBathrooms] = useState('0')
+    const [priceRange, updatePriceRange] = useState('Filter By Price')
+    const [bedrooms, updateBedrooms] = useState('Bedrooms')
+    const [bathrooms, updateBathrooms] = useState('Bathrooms')
 
     const onUpdateRadius = (radius: string) => {
         updateRadius(radius);
@@ -35,6 +35,7 @@ export default function MapScreen(props: any) {
             console.log(radius.substr(0, radius.length - 3))
             final_radius = +radius.substr(0, radius.length - 3)
         }
+        console.log(priceRange)
         if (priceRange !== 'Filter By Price') {
             final_price_range = priceRange.replace('&gt;', '>').replace('&lt;', '<')
         }
@@ -44,8 +45,8 @@ export default function MapScreen(props: any) {
         if (bathrooms !== 'Bathrooms') {
             final_bathrooms = +bathrooms
         }
-
-        let response = request.get(`http://www.staketogether.org:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`, function(error, response, body) {
+        
+        let response = request.get(`http://localhost:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`, function(error, response, body) {
             console.log(body)
             props.onGetAddressData(body)
         })
@@ -55,7 +56,7 @@ export default function MapScreen(props: any) {
     return (
         <div style = {{margin: 'auto'}}>
             <div style = {{paddingTop: '20px', backgroundColor: '#e0e0e0', fontSize: '20px', paddingBottom: '20px'}}>Properties in {props.zipCode}</div>
-            <div style={{width: '60%', verticalAlign: 'middle', display: 'inline-block'}}>
+            <div style={{verticalAlign: 'middle', display: 'inline-block', paddingTop: '10px'}}>
                 <Search zipCode={props.zipCode} updateSearchText={props.onUpdateZipCode} onSubmit={onSearch}/>
             </div>
 
@@ -95,7 +96,7 @@ export default function MapScreen(props: any) {
                 </select>
             </div>
                 
-            <GoogleMap style={{width: '50vw', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
+            <GoogleMap style={{width: '50vw', verticalAlign: 'middle', display: 'inline-block', paddingBottom: '20px', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
 
             <div style={{float: 'right', width: '400px', paddingRight: '100px'}}>
                 <VirtualizedList addressData={props.addressData} onSelectAddress={props.onSelectAddress}/>
