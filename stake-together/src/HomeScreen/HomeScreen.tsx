@@ -1,14 +1,17 @@
 import React from 'react';
 import Search from '../Search';
-import PageEnum from '../PageEnum';
+import '../App.css';
 
 function HomeScreen (props: any) {
     return (
-        <header className="App-header">
-            <div style = {{margin: 'auto'}}>
-                <Search onPageChange={props.onPageChange}/>
-            </div>
-        </header>
+        <div className="Splash">
+            <header className="App-header">
+                <div style = {{margin: 'auto'}}>
+                    <Search onPageChange={props.onPageChange}/>
+                </div>
+            </header>
+        </div>
+
     )
 }
 

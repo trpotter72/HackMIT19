@@ -9,18 +9,23 @@
 }
 
 .App-header {
-  background-color: white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: darkgray;
+  color: black;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.Splash {
+  background-color: wheat;
+  background-image: url(./resources/realestate.png);
+  background-size: 100% 100%;
 }
 
 @keyframes App-logo-spin {
