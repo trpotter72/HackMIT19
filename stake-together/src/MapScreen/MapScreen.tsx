@@ -4,9 +4,9 @@ import VirtualizedList from '../VirtualizedList';
 function MapScreen (props: any) {
     return (
         <div style = {{margin: 'auto'}}>
-            {props.zipCode}
+            <div style = {{paddingTop: '20px', backgroundColor: '#e0e0e0', fontSize: '20px', paddingBottom: '20px'}}>Properties in {props.zipCode}</div>
 
-            <div style={{width: '60%', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px'}}>
+            <div style={{width: '60%', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px'}}>
                 <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Search Radius'>
                     <option value = "">Search Radius</option>
                     <option value = "1">10 mi</option>
