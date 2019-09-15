@@ -6,15 +6,15 @@ import PageEnum from './PageEnum'
 export default function Search(props: any) {
     return (
         <div>
-            <form className="Search" noValidate autoComplete="off" style={{float: 'left', color:'white'}}>
+            <form className="Search" noValidate autoComplete="off" style={{float: 'left'}}>
                 <TextField
                     id="outlined-with-placeholder"
                     label="Enter Zipcode"
-                    //placeholder="Placeholder"
                     className="text"
                     margin="normal"
                     variant="outlined"
-                    //color="white"
+                    color="white"
+                    inputProps={{style:{backgroundColor: 'white'}}}
                     defaultValue={props.zipCode}
                     onChange={e => {
                         props.updateSearchText(e.target.value)
