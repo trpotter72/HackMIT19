@@ -72,10 +72,8 @@ export default function MapScreen(props: any) {
                     <option value = "5">5+</option>
                 </select>
             </div>
-              
-            <div style={{float: 'left', width: '50%'}}>
-                <GoogleMap style={{width: '50%', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
-            </div>
+                
+            <GoogleMap style={{width: '50vw', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
 
             <div style={{float: 'right', width: '400px', paddingRight: '100px'}}>
                 <VirtualizedList/>
