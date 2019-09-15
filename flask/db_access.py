@@ -33,9 +33,11 @@ def addInvestment(i):
     try:
         conn = getConnection()
         curr = conn.cursor()
-        cmd = """ INSERT INTO investments (invest_id, user_id, address, investment)
+        cmd1 = """ INSERT INTO investments (invest_id, user_id, address, investment)
             VALUES ('{}', '{}', '{}', {});""".format(*list(i.__dict__.values()))
-        curr.execute(cmd)
+        curr.execute(cmd1)
+        cmd2 = "UPDATE house_data SET invested = invested + {} WHERE address = '{}'".format(i.invested, i.address)
+        curr.execute(cmd2)
         curr.close()
         conn.commit()
     except(Exception, psycopg2.DatabaseError) as error:
@@ -71,6 +73,25 @@ def userExists(name):
         curr.close()
         if len(res) > 0:
             return True
+        return False
+    except(Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+    return False
+
+def getUserID(name):
+    conn = None
+    try:
+        conn = getConnection()
+        curr = conn.cursor()
+        cmd = "SELECT user_id FROM users WHERE username = '{}';".format(name)
+        curr.execute(cmd)
+        res = curr.fetchall()
+        curr.close()
+        if len(res) > 0:
+            return res[0][0]
         return False
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)

@@ -46,5 +46,32 @@ def check_password():
     else:
         return "INVALID PASSWORD"
 
+@app.route('/investment/add')
+def invest():
+    """
+    {
+        'username' : <string>,
+        'address'  : <string>,
+        'amount'   : <integer>
+    }
+    """
+    req_data = request.get_json()
+    name = req_data.get('username')
+    address = req_data.get('address')
+    amount = req_data.get('amount')
+    if name is None or address is None or amount is None:
+        return "BAD REQUEST"
+    elif not homeExists(address):
+        return "BAD ADDRESS"
+    elif not userExists(name):
+        return "BAD USER"
+    elif int(amount) < 1:
+        return "AMOUNT MUST BE POSITIVE"
+    else:
+        user_id = getUserID(name)
+        addInvestment(Investment(user_id,address,amount))
+        return "SUCCESS"
+    
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")
