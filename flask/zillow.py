@@ -4,6 +4,7 @@ from string import Template
 import re
 import pandas as pd
 import os 
+import time
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 driver = webdriver.Chrome()
@@ -12,22 +13,33 @@ regex = re.compile(r'^([\d\.]+) ?[A-z]*$')
 
 def get_houses(bound_west, bound_east, bound_south, bound_north):
     driver.get(template.substitute(bound_west=bound_west, bound_east=bound_east, bound_south=bound_south, bound_north=bound_north))
-    infos = driver.find_elements_by_class_name('list-card-info')
+    infos = driver.find_elements_by_class_name('list-card')
 
     res = []
+
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight / 5);")
+    time.sleep(1)
+    driver.execute_script("window.scrollTo(0, 2 * document.body.scrollHeight / 5);")
+    time.sleep(1)
+    driver.execute_script("window.scrollTo(0, 3 * document.body.scrollHeight / 8);")
+    time.sleep(1)
+    driver.execute_script("window.scrollTo(0, 3 * document.body.scrollHeight / 5);")
+    time.sleep(1)
+    driver.execute_script("window.scrollTo(0, 4 * document.body.scrollHeight / 5);")
 
     for i in infos:
         address = i.find_element_by_class_name('list-card-addr').text
         postal_code = address[-5:]
         price = i.find_element_by_class_name('list-card-price').text.replace(',', '').replace('$', '')
-        
+        img_url = i.find_element_by_tag_name('img').get_attribute('src')
+
         details = i.find_element_by_class_name('list-card-details').find_elements_by_tag_name('li')
         bedrooms = regex.match(details[0].text).group(1)
         bathrooms = regex.match(details[1].text).group(1)
         sqft = details[2].text.replace(',', '')
         sqft = regex.match(sqft).group(1)
 
-        res.append({'address': address, 'zip': postal_code, 'price': int(price), 'bedrooms': int(bedrooms), 'bathrooms': float(bathrooms), 'sqft': int(sqft)})
+        res.append({'address': address, 'zip': postal_code, 'price': int(price), 'bedrooms': int(bedrooms), 'bathrooms': float(bathrooms), 'sqft': int(sqft), 'img_url': img_url})
     
     return res
 
@@ -68,23 +80,19 @@ def get_rent_value(zip_code, sq_feet, bedrooms, prices_map):
             raise Exception(f'Data not present for ZIP code {zip_code}')
     return prices_map[f'{bedrooms}-bd-rent'][zip_code] * int(sq_feet)
 
+def add_exp_value(houses, prices):
+    for i in range(len(houses)):
+        try:
+            houses[i]['exp_sale'] = get_sale_value(int(houses[i]['zip']), int(houses[i]['sqft']), prices)
+        except:
+            pass
+        try:
+            houses[i]['exp_rent'] = get_rent_value(int(houses[i]['zip']), int(houses[i]['sqft']), int(houses[0]['bedrooms']), prices)
+        except:
+            pass
+
 bos_bounds = (-71.23696749877928, -70.85828250122069, 42.205313777605404, 42.42136394309102)
 prices = build_price_map()
 houses = get_houses(*bos_bounds)
-
-mean_abs_error_sale = 0
-n = 0
-
-for i in range(len(houses)):
-    try:
-        houses[i]['exp_sale'] = get_sale_value(int(houses[i]['zip']), int(houses[i]['sqft']), prices)
-        mean_abs_error_sale += abs(houses[i]['exp_sale'] - houses[i]['price'])
-        n += 1
-    except:
-        pass
-    try:
-        houses[i]['exp_rent'] = get_rent_value(int(houses[i]['zip']), int(houses[i]['sqft']), int(houses[0]['bedrooms']), prices)
-    except:
-        pass
+add_exp_value(prices, houses)
 print(houses)
-print(mean_abs_error_sale / n)
