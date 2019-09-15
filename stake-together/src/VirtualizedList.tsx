@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
+import { ListItemIcon } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,6 +22,9 @@ function Row(props: any) {
   return (
     <ListItem button style={style} key={index}>
       <ListItemText primary={`Investor Name`} secondary={`Investment Amount`}/>
+      <ListItemIcon>
+        <img src='https://media.gettyimages.com/photos/exterior-of-new-suburban-house-picture-id171246403?s=2048x2048' alt="" style={{float: 'left', height: '30px', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '5px', paddingRight: '5px'}}></img>
+      </ListItemIcon>
     </ListItem>
   );
 }
@@ -35,7 +39,7 @@ export default function VirtualizedList() {
 
   return (
     <div className={classes.root}>
-      <FixedSizeList height={400} width={400} itemSize={46} itemCount={10}>
+      <FixedSizeList height={400} width={400} itemSize={60} itemCount={10}>
         {Row}
       </FixedSizeList>
     </div>

@@ -18,7 +18,7 @@ function Search (props: any) {
                 />
             </form>
             <Button variant="contained" color="primary" style={{float: 'right', top: '50%', marginTop:'25px', marginLeft:'10px'}} onClick={(event: React.MouseEvent<HTMLElement>) => {
- props.onPageChange(PageEnum.GROUP);
+ props.onPageChange(PageEnum.MAP);
 }}>
                 Search
             </Button>
