@@ -7,7 +7,7 @@ function GroupScreen (props: any) {
         <div style = {{margin: 'auto'}}>
 
             <div>
-                <div style={{width: '33.33%', float: 'left', paddingTop: '20px', paddingBottom: '20px', backgroundColor: '#90caf9'}}>Amount left to invest</div>
+                <div style={{width: '33.33%', float: 'left', paddingTop: '20px', paddingBottom: '20px', backgroundColor: '#90caf9'}}>Amount to invest</div>
                 <div style={{width: '33.33%', float: 'left', paddingTop: '20px', paddingBottom: '20px', backgroundColor: '#90caf9'}}>Amount Invested</div>
                 <div style={{width: '33.33%', float: 'left', paddingTop: '20px', paddingBottom: '20px', backgroundColor: '#90caf9'}}>Number of Investors</div>
             </div>

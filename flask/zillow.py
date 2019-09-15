@@ -12,10 +12,27 @@ driver = webdriver.Chrome()
 template = Template('https://www.zillow.com/homes/for_sale/?searchQueryState={%22pagination%22:{},%22mapBounds%22:{%22west%22:$bound_west,%22east%22:$bound_east,%22south%22:$bound_south,%22north%22:$bound_north},%22isMapVisible%22:true,%22filterState%22:{},%22isListVisible%22:true}')
 regex = re.compile(r'^([\d\.]+) ?[A-z]*$')
 
-def __get_houses(bound_west, bound_east, bound_south, bound_north):
+def parse_price_range(price_range):
+    lower = upper = 0
+    if '-' in price_range:
+        print(price_range)
+        match = re.match(r'^\$([\d,]+) ?- ?\$([\d,]+)$', price_range)
+        lower = int(match.group(1).replace(',', ''))
+        upper = int(match.group(2).replace(',', ''))
+    elif '<' in price_range:
+        lower = 0
+        upper = int(price_range[price_range.find('$')+1:].replace(',', ''))
+    elif '>' in price_range:
+        lower = int(price_range[price_range.find('$')+1:].replace(',', ''))
+        upper = -1
+    else:
+        raise Exception('Invalid price range')
+    return lower, upper
+
+def __get_houses(bound_west, bound_east, bound_south, bound_north, price_range, bed, bath):
     driver.get(template.substitute(bound_west=bound_west, bound_east=bound_east, bound_south=bound_south, bound_north=bound_north))
     infos = driver.find_elements_by_class_name('list-card')
-
+    lower_price, upper_price = parse_price_range(price_range) if price_range != '-1--1' else (-1, -1)
     res = []
 
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight / 5);")
@@ -30,16 +47,17 @@ def __get_houses(bound_west, bound_east, bound_south, bound_north):
 
     for i in infos:
         address = i.find_element_by_class_name('list-card-addr').text
-        price = i.find_element_by_class_name('list-card-price').text.replace(',', '').replace('$', '').replace('Est. ', '')
+        price = int(i.find_element_by_class_name('list-card-price').text.replace(',', '').replace('$', '').replace('Est. ', ''))
         img_url = i.find_element_by_tag_name('img').get_attribute('src')
 
         details = i.find_element_by_class_name('list-card-details').find_elements_by_tag_name('li')
-        bedrooms = regex.match(details[0].text).group(1)
-        bathrooms = regex.match(details[1].text).group(1)
+        bedrooms = int(regex.match(details[0].text).group(1))
+        bathrooms = float(regex.match(details[1].text).group(1))
         sqft = details[2].text.replace(',', '')
-        sqft = regex.match(sqft).group(1)
+        sqft = int(regex.match(sqft).group(1))
 
-        res.append(House(address, int(price), int(bedrooms), float(bathrooms), int(sqft), img_url, 0, 0, 0, 0))
+        if price > lower_price and (price <= upper_price or upper_price < 0) and (bedrooms == bed or bed < 0) and (bathrooms == bath or bath < 0):
+            res.append(House(address, price, bedrooms, bathrooms, sqft, img_url, 0, 0, 0, 0))
     
     return res
 
@@ -92,8 +110,8 @@ def add_exp_value(houses, prices):
         except:
             pass
 
-def get_houses(bounds):
+def get_houses(bounds, price_range, bed, bath):
     prices = build_price_map()
-    houses = __get_houses(*bounds)
+    houses = __get_houses(*bounds, price_range, bed, bath)
     add_exp_value(houses, prices)
     return houses

@@ -6,8 +6,8 @@ import MapScreen from './MapScreen/MapScreen';
 import LoginScreen from './LoginScreen';
 
 function ContentArea(props: any) {
-    const [zipCode, setZipCode] = useState(66049);
-    const onUpdateZipCode = (zipCode: number) => {
+    const [zipCode, setZipCode] = useState('66049');
+    const onUpdateZipCode = (zipCode: string) => {
       setZipCode(zipCode);
     };
     const [address, setAddress] = useState("");
@@ -36,6 +36,7 @@ function ContentArea(props: any) {
                 <MapScreen onPageChange={props.onPageChange} 
                            onSelectAddress={onSelectAddress}
                            onGetAddressData={onGetAddressData}
+                           onUpdateZipCode={onUpdateZipCode}
                            zipCode={zipCode}/>
             );
         case PageEnum.LOGIN:
