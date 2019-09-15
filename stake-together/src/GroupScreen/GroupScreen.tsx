@@ -1,8 +1,9 @@
 import React from 'react';
 import VirtualizedList from '../VirtualizedList';
 import Box from '@material-ui/core/Box';
+import PageEnum from '../PageEnum';
 
-function GroupScreen (onPageChange) {
+function GroupScreen (props: any) {
     return (
         <div style = {{margin: 'auto'}}>
 

@@ -7,13 +7,12 @@ import { useState } from 'react';
 
 function ContentArea() {
     const [pageType, setPageType] = useState(PageEnum.HOME);
-    const onPageChange = function(pageType){
+    const onPageChange = (pageType: PageEnum) => {
       setPageType(pageType);
     };
 
     switch (pageType){
         case PageEnum.HOME:
-            onPageChange(PageEnum.GROUP)
             return(
                 <HomeScreen onPageChange={onPageChange}/>
             );
