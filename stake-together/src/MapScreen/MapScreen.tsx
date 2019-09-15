@@ -6,9 +6,9 @@ import GoogleMap from './GoogleMap';
 
 export default function MapScreen(props: any) {
     const [radius, updateRadius] = useState('0')
-    const [priceRange, updatePriceRange] = useState("")
-    const [bedrooms, updateBedrooms] = useState('0')
-    const [bathrooms, updateBathrooms] = useState('0')
+    const [priceRange, updatePriceRange] = useState('Filter By Price')
+    const [bedrooms, updateBedrooms] = useState('Bedrooms')
+    const [bathrooms, updateBathrooms] = useState('Bathrooms')
 
     const onUpdateRadius = (radius: string) => {
         updateRadius(radius);
@@ -35,6 +35,7 @@ export default function MapScreen(props: any) {
             console.log(radius.substr(0, radius.length - 3))
             final_radius = +radius.substr(0, radius.length - 3)
         }
+        console.log(priceRange)
         if (priceRange !== 'Filter By Price') {
             final_price_range = priceRange.replace('&gt;', '>').replace('&lt;', '<')
         }
@@ -44,7 +45,7 @@ export default function MapScreen(props: any) {
         if (bathrooms !== 'Bathrooms') {
             final_bathrooms = +bathrooms
         }
-
+        
         let response = request.get(`http://localhost:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`, function(error, response, body) {
             console.log(body)
         })
