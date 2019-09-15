@@ -85,12 +85,12 @@ def syncHouses(hs):
         conn = getConnection()
         cur = conn.cursor()
         for i in range(hs):
-            cur.execute(f'SELECT invested FROM house_data WHERE address = '{hs[i].address}';')
+            cur.execute(f"SELECT invested FROM house_data WHERE address = '{hs[i].address}';")
             res = cur.fetchall()
             if res:
                 hs[i].invested = res[0][0]
             else:
-                cur.execute(f'INSERT INTO house_data VALUES ({*list(hs[i].__dict__.values())}')
+                cur.execute(f'INSERT INTO house_data VALUES {tuple(hs[i].__dict__.values())}')
         cur.close()
         conn.commit()
     except(Exception, psycopg2.DatabaseError) as error:

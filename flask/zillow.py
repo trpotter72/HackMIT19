@@ -5,13 +5,14 @@ import re
 import pandas as pd
 import os 
 import time
+from classes import House
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 driver = webdriver.Chrome()
 template = Template('https://www.zillow.com/homes/for_sale/?searchQueryState={%22pagination%22:{},%22mapBounds%22:{%22west%22:$bound_west,%22east%22:$bound_east,%22south%22:$bound_south,%22north%22:$bound_north},%22isMapVisible%22:true,%22filterState%22:{},%22isListVisible%22:true}')
 regex = re.compile(r'^([\d\.]+) ?[A-z]*$')
 
-def get_houses(bound_west, bound_east, bound_south, bound_north):
+def __get_houses(bound_west, bound_east, bound_south, bound_north):
     driver.get(template.substitute(bound_west=bound_west, bound_east=bound_east, bound_south=bound_south, bound_north=bound_north))
     infos = driver.find_elements_by_class_name('list-card')
 
@@ -29,8 +30,7 @@ def get_houses(bound_west, bound_east, bound_south, bound_north):
 
     for i in infos:
         address = i.find_element_by_class_name('list-card-addr').text
-        postal_code = address[-5:]
-        price = i.find_element_by_class_name('list-card-price').text.replace(',', '').replace('$', '')
+        price = i.find_element_by_class_name('list-card-price').text.replace(',', '').replace('$', '').replace('Est. ', '')
         img_url = i.find_element_by_tag_name('img').get_attribute('src')
 
         details = i.find_element_by_class_name('list-card-details').find_elements_by_tag_name('li')
@@ -39,7 +39,7 @@ def get_houses(bound_west, bound_east, bound_south, bound_north):
         sqft = details[2].text.replace(',', '')
         sqft = regex.match(sqft).group(1)
 
-        res.append({'address': address, 'zip': postal_code, 'price': int(price), 'bedrooms': int(bedrooms), 'bathrooms': float(bathrooms), 'sqft': int(sqft), 'img_url': img_url})
+        res.append(House(address, int(price), int(bedrooms), float(bathrooms), int(sqft), img_url, 0, 0, 0, 0))
     
     return res
 
@@ -71,7 +71,7 @@ def get_rent_value(zip_code, sq_feet, bedrooms, prices_map):
     bedrooms = min(bedrooms, 5)
     if zip_code not in prices_map[f'{bedrooms}-bd-rent'].keys():
         found = False
-        for bedrooms in range(1, 6):
+        for i in range(1, 6):
             if zip_code in prices_map[f'{bedrooms}-bd-rent'].keys():
                 found = True
                 bedrooms = i
@@ -82,17 +82,18 @@ def get_rent_value(zip_code, sq_feet, bedrooms, prices_map):
 
 def add_exp_value(houses, prices):
     for i in range(len(houses)):
+        postal_code = houses[i].address[-5:]
         try:
-            houses[i]['exp_sale'] = get_sale_value(int(houses[i]['zip']), int(houses[i]['sqft']), prices)
+            houses[i].value = get_sale_value(int(postal_code), int(houses[i]['sqft']), prices)
         except:
             pass
         try:
-            houses[i]['exp_rent'] = get_rent_value(int(houses[i]['zip']), int(houses[i]['sqft']), int(houses[0]['bedrooms']), prices)
+            houses[i].exp_rent = get_rent_value(int(postal_code), int(houses[i]['sqft']), int(houses[0]['bedrooms']), prices)
         except:
             pass
 
-bos_bounds = (-71.23696749877928, -70.85828250122069, 42.205313777605404, 42.42136394309102)
-prices = build_price_map()
-houses = get_houses(*bos_bounds)
-add_exp_value(prices, houses)
-print(houses)
+def get_houses(bounds):
+    prices = build_price_map()
+    houses = __get_houses(*bounds)
+    add_exp_value(houses, prices)
+    return houses
