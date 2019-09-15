@@ -12,13 +12,14 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { useState } from 'react';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+        Stake Together
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -57,6 +58,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignInSide(props: any) {
   const classes = useStyles();
+  const [email, setEmail] = useState('');
+  const onEmailChange = (email: string) => {
+      setEmail(email);
+  }
+  const [password, setPassword] = useState('');
+  const onPasswordChange = (password: string) => {
+      setPassword(password);
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -81,6 +90,9 @@ export default function SignInSide(props: any) {
               name="email"
               autoComplete="email"
               autoFocus
+              onBlur={ (e) => {
+                  onEmailChange(e.target.value);
+              }}
             />
             <TextField
               variant="outlined"
@@ -92,6 +104,9 @@ export default function SignInSide(props: any) {
               type="password"
               id="password"
               autoComplete="current-password"
+              onBlur={ (e) => {
+                  onPasswordChange(e.target.value);
+              }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -105,6 +120,15 @@ export default function SignInSide(props: any) {
                 color="primary"
                 className={classes.submit}
                 style={{width: '80%'}}
+                onClick={ () => {
+                    let xhr = new XMLHttpRequest();
+                    console.log("hello");
+                    xhr.addEventListener('load', () => {
+                        console.log(xhr.responseText);
+                    })
+                    xhr.open('POST', 'http://staketogether.org/users/add_user');
+                    xhr.send(JSON.stringify({ username: {email}, password: {password}}));
+                }}
                 >
                 Register
                 </Button>
@@ -116,6 +140,15 @@ export default function SignInSide(props: any) {
                 color="primary"
                 className={classes.submit}
                 style={{width: '80%'}}
+                onClick={ () => {
+                    let xhr = new XMLHttpRequest();
+                    console.log("hello");
+                    xhr.addEventListener('load', () => {
+                        console.log(xhr.responseText);
+                    })
+                    xhr.open('POST', 'http://staketogether.org/users/check_password');
+                    xhr.send(JSON.stringify({ username: {email}, password: {password}}));
+                }}
                 >
                 Sign In
                 </Button>
