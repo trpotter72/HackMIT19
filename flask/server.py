@@ -86,10 +86,18 @@ def get_houses():
         'invested': house.invested,
         'value': house.value,
         'exp_rent': house.exp_rent}
+    
+    if 'zip_code' not in request.args or 'radius' not in request.args or 'price_range' not in request.args or 'bed' not in request.args or 'bath' not in request.args:
+        return 'Missing parameters', 400
+
     zip_code = int(request.args.get('zip_code'))
     radius = int(request.args.get('radius'))
+    price_range = request.args.get('price_range')
+    bed = request.args.get('bed')
+    bath = request.args.get('bath')
+
     bounds = gmaps.get_bounds(zip_code, radius)
-    return str([serialize(h) for h in zillow.get_houses(bounds)]), 200
+    return str([serialize(h) for h in zillow.get_houses(bounds, price_range, bed, bath)]), 200
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")
