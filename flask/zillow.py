@@ -15,7 +15,6 @@ regex = re.compile(r'^([\d\.]+) ?[A-z]*$')
 def parse_price_range(price_range):
     lower = upper = 0
     if '-' in price_range:
-        print(price_range)
         match = re.match(r'^\$([\d,]+) ?- ?\$([\d,]+)$', price_range)
         lower = int(match.group(1).replace(',', ''))
         upper = int(match.group(2).replace(',', ''))

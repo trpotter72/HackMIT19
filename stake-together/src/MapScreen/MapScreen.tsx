@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import Search from '../Search';
 import VirtualizedList from '../VirtualizedList';
-import PageEnum from '../PageEnum';
+import request from 'request';
 import GoogleMap from './GoogleMap';
 
 export default function MapScreen(props: any) {
-    const [radius, updateRadius] = useState(0)
+    const [radius, updateRadius] = useState('0')
     const [priceRange, updatePriceRange] = useState("")
-    const [bedrooms, updateBedrooms] = useState(0)
-    const [bathrooms, updateBathrooms] = useState(0)
+    const [bedrooms, updateBedrooms] = useState('0')
+    const [bathrooms, updateBathrooms] = useState('0')
 
-    const onUpdateRadius = (radius: number) => {
+    const onUpdateRadius = (radius: string) => {
         updateRadius(radius);
     }
 
@@ -18,16 +18,36 @@ export default function MapScreen(props: any) {
         updatePriceRange(priceRange);
     }
 
-    const onUpdateBedrooms = (bedrooms: number) => {
+    const onUpdateBedrooms = (bedrooms: string) => {
         updateBedrooms(bedrooms);
     }
 
-    const onUpdateBathrooms = (bathrooms: number) => {
+    const onUpdateBathrooms = (bathrooms: string) => {
         updateBathrooms(bathrooms);
     }
 
     const onSearch = () => {
-        
+        let final_radius = 0
+        let final_price_range = '-1--1'
+        let final_bedrooms = -1
+        let final_bathrooms = -1
+        if (radius !== 'Search Radius') {
+            console.log(radius.substr(0, radius.length - 3))
+            final_radius = +radius.substr(0, radius.length - 3)
+        }
+        if (priceRange !== 'Filter By Price') {
+            final_price_range = priceRange.replace('&gt;', '>').replace('&lt;', '<')
+        }
+        if (bedrooms !== 'Bedrooms') {
+            final_bedrooms = +bedrooms
+        }
+        if (bathrooms !== 'Bathrooms') {
+            final_bathrooms = +bathrooms
+        }
+
+        let response = request.get(`http://localhost:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`, function(error, response, body) {
+            console.log(body)
+        })
     }
     
     return (
@@ -38,7 +58,7 @@ export default function MapScreen(props: any) {
             </div>
 
             <div style={{width: '60%', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px'}}>
-                <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Search Radius' onChange={e => onUpdateRadius(+e.target.selectedOptions[0].innerHTML)}>
+                <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Search Radius' onChange={e => onUpdateRadius(e.target.selectedOptions[0].innerHTML)}>
                     <option value = "">Search Radius</option>
                     <option value = "1">10 mi</option>
                     <option value = "2">20 mi</option>
@@ -49,13 +69,13 @@ export default function MapScreen(props: any) {
 
                 <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name = "Filter by Price" onChange={e => onUpdatePriceRange(e.target.selectedOptions[0].innerHTML)}>
                     <option value = "">Filter By Price</option>
-                    <option value = "1"> &#60; $1,000 </option>
-                    <option value = "2">$1,000-$5,000</option>
-                    <option value = "3">$5,000-$10,000</option>
-                    <option value = "4">$10,000-$20,000</option>
-                    <option value = "5">&#62; $20,000</option>
+                    <option value = "1">&#60; $100,000 </option>
+                    <option value = "2">$100,000-$200,000</option>
+                    <option value = "3">$200,000-$300,000</option>
+                    <option value = "4">$300,000-$400,000</option>
+                    <option value = "5">&#62; $400,000</option>
                 </select>
-                <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Bedrooms' onChange={e => {onUpdateBedrooms(+e.target.selectedOptions[0].innerHTML)}}>
+                <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Bedrooms' onChange={e => {onUpdateBedrooms(e.target.selectedOptions[0].innerHTML)}}>
                     <option value = "">Bedrooms</option>
                     <option value = "1"> 1 </option>
                     <option value = "2">2</option>
@@ -63,7 +83,7 @@ export default function MapScreen(props: any) {
                     <option value = "4">4</option>
                     <option value = "5">5+</option>
                 </select>
-                <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Bathrooms' onChange={e => {onUpdateBathrooms(+e.target.selectedOptions[0].innerHTML)}}>
+                <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Bathrooms' onChange={e => {onUpdateBathrooms(e.target.selectedOptions[0].innerHTML)}}>
                     <option value = "">Bathrooms</option>
                     <option value = "1"> 1 </option>
                     <option value = "2">2</option>
