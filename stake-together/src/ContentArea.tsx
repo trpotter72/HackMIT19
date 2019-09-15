@@ -3,30 +3,30 @@ import PageEnum from './PageEnum';
 import HomeScreen from './HomeScreen/HomeScreen';
 import GroupScreen from './GroupScreen/GroupScreen';
 import MapScreen from './MapScreen/MapScreen';
-import { useState } from 'react';
+import LoginScreen from './LoginScreen';
 
-function ContentArea() {
-    const [pageType, setPageType] = useState(PageEnum.HOME);
-    const onPageChange = (pageType: PageEnum) => {
-      setPageType(pageType);
-    };
+function ContentArea(props: any) {
 
-    switch (pageType){
+    switch (props.pageType){
         case PageEnum.HOME:
             return(
-                <HomeScreen onPageChange={onPageChange}/>
+                <HomeScreen onPageChange={props.onPageChange}/>
             );
         case PageEnum.GROUP:
             return(
-                <GroupScreen onPageChange={onPageChange}/>
+                <GroupScreen onPageChange={props.onPageChange}/>
             );
         case PageEnum.MAP:
             return(
-                <MapScreen onPageChange={onPageChange}/>
+                <MapScreen onPageChange={props.onPageChange}/>
+            );
+        case PageEnum.LOGIN:
+            return(
+                <LoginScreen onPageChange={props.onPageChange}/>
             );
         default:
             return(
-                <HomeScreen onPageChange={onPageChange}/>
+                <HomeScreen onPageChange={props.onPageChange}/>
             );
     }
 }
