@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import zillow
 from db_access import *
 import gmaps
@@ -21,12 +21,12 @@ def add_user():
     name = req_data.get('username')
     password = req_data.get('password')
     if name is None or password is None:
-        return "BAD REQUEST"
+        return jsonify("BAD REQUEST"), 400
     elif userExists(name):
-        return "USER EXISTS"
+        return jsonify("USER EXISTS")
     else:
         addUser(User(name, password))
-    return "USER ADDED"
+    return jsonify("USER ADDED")
 
 @app.route('/users/check_password', methods=['POST'])
 def check_password():
@@ -40,13 +40,13 @@ def check_password():
     name = req_data.get('username')
     password = req_data.get('password')
     if name is None or password is None:
-        return "BAD REQUEST"
+        return jsonify("BAD REQUEST"), 400
     elif not userExists(name):
-        return "USER DOESN'T EXISTS"
+        return jsonify("USER DOESN'T EXISTS")
     elif passwordMatches(name, password):
-        return "VALID PASSWORD"
+        return jsonify("VALID PASSWORD")
     else:
-        return "INVALID PASSWORD"
+        return jsonify("INVALID PASSWORD")
 
 @app.route('/investment/add')
 def invest():
@@ -62,17 +62,17 @@ def invest():
     address = req_data.get('address')
     amount = req_data.get('amount')
     if name is None or address is None or amount is None:
-        return "BAD REQUEST"
+        return jsonify("BAD REQUEST"), 400
     elif not homeExists(address):
-        return "BAD ADDRESS"
+        return jsonify("BAD ADDRESS")
     elif not userExists(name):
-        return "BAD USER"
+        return jsonify("BAD USER")
     elif int(amount) < 1:
-        return "AMOUNT MUST BE POSITIVE"
+        return jsonify("AMOUNT MUST BE POSITIVE")
     else:
         user_id = getUserID(name)
         addInvestment(Investment(user_id,address,amount))
-        return "SUCCESS"
+        return jsonify("SUCCESS")
     
 @app.route('/houses/', methods=['GET'])
 def get_houses():
