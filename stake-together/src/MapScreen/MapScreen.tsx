@@ -99,7 +99,7 @@ export default function MapScreen(props: any) {
             <GoogleMap style={{width: '50vw', verticalAlign: 'middle', display: 'inline-block', paddingBottom: '20px', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
 
             <div style={{float: 'right', width: '400px', paddingRight: '100px'}}>
-                <VirtualizedList addressData={props.addressData} onSelectAddress={props.onSelectAddress}/>
+                <VirtualizedList addressData={props.addressData} onSelectAddress={props.onSelectAddress} onPageChange={props.onPageChange}/>
             </div>
         </div>
     )

@@ -5,6 +5,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import { ListItemIcon } from '@material-ui/core';
+import PageEnum from './PageEnum';
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,7 +50,9 @@ export default function VirtualizedList(props: any) {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={ () =>{
+      props.onPageChange(PageEnum.GROUP);
+    }}>
       <FixedSizeList height={400} width={400} itemSize={60} itemCount={10}>
         {Row}
       </FixedSizeList>
