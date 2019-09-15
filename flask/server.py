@@ -1,8 +1,15 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
+from flask_cors import CORS
 import zillow
 from db_access import *
 import gmaps
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
+def build_response(message, status):
+    response = Response(message, status)
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 @app.route('/')
 def hello_world():
@@ -21,12 +28,12 @@ def add_user():
     name = req_data.get('username')
     password = req_data.get('password')
     if name is None or password is None:
-        return jsonify("BAD REQUEST"), 400
+        return build_response(jsonify("BAD REQUEST"), 400)
     elif userExists(name):
-        return jsonify("USER EXISTS")
+        return build_response(jsonify("USER EXISTS"), 400)
     else:
         addUser(User(name, password))
-    return jsonify("USER ADDED")
+    return build_response(jsonify("USER ADDED"), 200)
 
 @app.route('/users/check_password', methods=['POST'])
 def check_password():
@@ -40,13 +47,13 @@ def check_password():
     name = req_data.get('username')
     password = req_data.get('password')
     if name is None or password is None:
-        return jsonify("BAD REQUEST"), 400
+        return build_response(jsonify("BAD REQUEST"), 400)
     elif not userExists(name):
-        return jsonify("USER DOESN'T EXISTS")
+        return build_response(jsonify("USER DOESN'T EXISTS"), 404)
     elif passwordMatches(name, password):
-        return jsonify("VALID PASSWORD")
+        return build_response(jsonify("VALID PASSWORD"), 200)
     else:
-        return jsonify("INVALID PASSWORD")
+        return build_response(jsonify("INVALID PASSWORD"), 400)
 
 @app.route('/investment/add')
 def invest():
@@ -62,17 +69,17 @@ def invest():
     address = req_data.get('address')
     amount = req_data.get('amount')
     if name is None or address is None or amount is None:
-        return jsonify("BAD REQUEST"), 400
+        return build_response(jsonify("BAD REQUEST"), 400)
     elif not homeExists(address):
-        return jsonify("BAD ADDRESS")
+        return build_response(jsonify("BAD ADDRESS"), 400)
     elif not userExists(name):
-        return jsonify("BAD USER")
+        return build_response(jsonify("BAD USER"), 400)
     elif int(amount) < 1:
-        return jsonify("AMOUNT MUST BE POSITIVE")
+        return build_response(jsonify("AMOUNT MUST BE POSITIVE"), 400)
     else:
         user_id = getUserID(name)
         addInvestment(Investment(user_id,address,amount))
-        return jsonify("SUCCESS")
+        return build_response(jsonify("SUCCESS"), 200)
     
 @app.route('/houses/', methods=['GET'])
 def get_houses():
@@ -88,7 +95,7 @@ def get_houses():
         'exp_rent': house.exp_rent}
     
     if 'zip_code' not in request.args or 'radius' not in request.args or 'price_range' not in request.args or 'bed' not in request.args or 'bath' not in request.args:
-        return 'Missing parameters', 400
+        return build_response('Missing parameters', 400)
 
     zip_code = int(request.args.get('zip_code'))
     radius = int(request.args.get('radius'))
@@ -97,7 +104,7 @@ def get_houses():
     bath = request.args.get('bath')
 
     bounds = gmaps.get_bounds(zip_code, radius)
-    return str([serialize(h) for h in zillow.get_houses(bounds, price_range, bed, bath)]), 200
+    return build_response(str([serialize(h) for h in zillow.get_houses(bounds, price_range, bed, bath)]), 200)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")
