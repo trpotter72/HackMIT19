@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import PageEnum from './PageEnum'
 
-function Search (props: any) {
+export default function Search(props: any) {
     return (
         <div>
             <form className="Search" noValidate autoComplete="off" style={{float: 'left', color:'white'}}>
@@ -15,18 +15,15 @@ function Search (props: any) {
                     margin="normal"
                     variant="outlined"
                     //color="white"
-                    onBlur={(event) => {
-                        props.onUpdateZipCode(event.target.value);
+                    defaultValue={props.zipCode}
+                    onChange={e => {
+                        props.updateSearchText(e.target.value)
                     }}
                 />
             </form>
-            <Button variant="contained" color="primary" style={{float: 'right', top: '50%', marginTop:'25px', marginLeft:'10px'}} onClick={(event: React.MouseEvent<HTMLElement>) => {
- props.onPageChange(PageEnum.MAP);
-}}>
+            <Button variant="contained" color="primary" style={{float: 'right', top: '50%', marginTop:'25px', marginLeft:'10px'}} onClick={e => props.onSubmit()}>
                 Search
             </Button>
         </div>
     );
 }
-
-export default Search;
