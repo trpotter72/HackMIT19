@@ -33,7 +33,7 @@ export default function MapScreen(props: any) {
     return (
         <div style = {{margin: 'auto'}}>
             <div style = {{paddingTop: '20px', backgroundColor: '#e0e0e0', fontSize: '20px', paddingBottom: '20px'}}>Properties in {props.zipCode}</div>
-            <div style={{width: '60%', verticalAlign: 'middle', display: 'inline-block'}}>
+            <div style={{verticalAlign: 'middle', display: 'inline-block', paddingTop: '10px'}}>
                 <Search zipCode={props.zipCode} updateSearchText={props.onUpdateZipCode} onSubmit={onSearch}/>
             </div>
 
@@ -73,7 +73,7 @@ export default function MapScreen(props: any) {
                 </select>
             </div>
                 
-            <GoogleMap style={{width: '50vw', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
+            <GoogleMap style={{width: '50vw', verticalAlign: 'middle', display: 'inline-block', paddingBottom: '20px', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
 
             <div style={{float: 'right', width: '400px', paddingRight: '100px'}}>
                 <VirtualizedList/>
