@@ -22,7 +22,7 @@ function ContentArea(props: any) {
             );
         case PageEnum.MAP:
             return(
-                <MapScreen onPageChange={props.onPageChange} zipCode={zipCode}/>
+                <MapScreen onPageChange={props.onPageChange} zipCode={zipCode} onUpdateZipCode={onUpdateZipCode}/>
             );
         case PageEnum.LOGIN:
             return(

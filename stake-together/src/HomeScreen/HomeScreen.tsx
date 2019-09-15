@@ -8,7 +8,7 @@ function HomeScreen (props: any) {
         <div className="Splash">
             <header className="App-header">
                 <div style = {{margin: 'auto'}}>
-                    <Search onPageChange={props.onPageChange} updateSearchText={props.onUpdateZipCode} initialValue={""} onSubmit={() => {props.onPageChange(PageEnum.MAP)}}/>
+                    <Search onPageChange={props.onPageChange} updateSearchText={props.onUpdateZipCode} zipCode={""} onSubmit={() => {props.onPageChange(PageEnum.MAP)}}/>
                 </div>
             </header>
         </div>
