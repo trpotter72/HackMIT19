@@ -15,6 +15,9 @@ function Search (props: any) {
                     margin="normal"
                     variant="outlined"
                     //color="white"
+                    onBlur={(event) => {
+                        props.onUpdateZipCode(event.target.value);
+                    }}
                 />
             </form>
             <Button variant="contained" color="primary" style={{float: 'right', top: '50%', marginTop:'25px', marginLeft:'10px'}} onClick={(event: React.MouseEvent<HTMLElement>) => {

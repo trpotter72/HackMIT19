@@ -1,13 +1,10 @@
 import React from 'react';
-import Search from '../Search';
 import VirtualizedList from '../VirtualizedList';
 
 function MapScreen (props: any) {
     return (
         <div style = {{margin: 'auto'}}>
-            <div style={{width: '60%', verticalAlign: 'middle', display: 'inline-block'}}>
-                <Search onPageChange={props.onPageChange}/>
-            </div>
+            {props.zipCode}
 
             <div style={{width: '60%', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px'}}>
                 <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Search Radius'>
