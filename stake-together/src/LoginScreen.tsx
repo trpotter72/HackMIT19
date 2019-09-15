@@ -126,7 +126,7 @@ export default function SignInSide(props: any) {
                     xhr.addEventListener('load', () => {
                         console.log(xhr.responseText);
                     })
-                    xhr.open('POST', 'http://staketogether.org/users/add_user');
+                    xhr.open('POST', 'http://localhost:5000/users/add_user');
                     xhr.send(JSON.stringify({ username: {email}, password: {password}}));
                 }}
                 >
@@ -146,7 +146,7 @@ export default function SignInSide(props: any) {
                     xhr.addEventListener('load', () => {
                         console.log(xhr.responseText);
                     })
-                    xhr.open('POST', 'http://staketogether.org/users/check_password');
+                    xhr.open('POST', 'http://localhost:5000/users/check_password');
                     xhr.send(JSON.stringify({ username: {email}, password: {password}}));
                 }}
                 >
