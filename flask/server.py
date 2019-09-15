@@ -1,4 +1,5 @@
 from flask import Flask, request
+import zillow
 from db_access import *
 app = Flask(__name__)
 
@@ -45,6 +46,11 @@ def check_password():
         return "VALID PASSWORD"
     else:
         return "INVALID PASSWORD"
+
+@app.route('/houses/')
+def get_houses():
+    zip_code = request.args.get('zip_code')
+    radius = request.args.get('radius')
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="0.0.0.0")
