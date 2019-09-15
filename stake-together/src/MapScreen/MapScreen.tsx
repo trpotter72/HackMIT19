@@ -45,9 +45,11 @@ export default function MapScreen(props: any) {
             final_bathrooms = +bathrooms
         }
 
-        let response = request.get(`http://localhost:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`, function(error, response, body) {
+        let response = request.get(`http://www.staketogether.org:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`, function(error, response, body) {
             console.log(body)
+            props.onGetAddressData(body)
         })
+
     }
     
     return (
@@ -96,7 +98,7 @@ export default function MapScreen(props: any) {
             <GoogleMap style={{width: '50vw', verticalAlign: 'middle', display: 'inline-block', paddingLeft: '40px', paddingTop: '20px', float: 'left'}}></GoogleMap>
 
             <div style={{float: 'right', width: '400px', paddingRight: '100px'}}>
-                <VirtualizedList/>
+                <VirtualizedList addressData={props.addressData} onSelectAddress={props.onSelectAddress}/>
             </div>
         </div>
     )

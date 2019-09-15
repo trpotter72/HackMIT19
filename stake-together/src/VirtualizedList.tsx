@@ -17,24 +17,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Row(props: any) {
-  const { index, style } = props;
-
-  return (
-    <ListItem button style={style} key={index}>
-      <ListItemText primary={`Investor Name`} secondary={`Investment Amount`}/>
+  const addresses = props.addressData;
+  const listItems = addresses.map((element : any) =>
+    <ListItem button key={element.address}>
+      <ListItemText primary={element.address} secondary={element.price}/>
       <ListItemIcon>
-        <img src='https://media.gettyimages.com/photos/exterior-of-new-suburban-house-picture-id171246403?s=2048x2048' alt="" style={{float: 'left', height: '30px', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '5px', paddingRight: '5px'}}></img>
+        <img src={props.image} alt="" style={{float: 'left', height: '30px', paddingTop: '5px', paddingBottom: '5px', paddingLeft: '5px', paddingRight: '5px'}}></img>
       </ListItemIcon>
     </ListItem>
   );
+  return (
+    listItems
+  );
 }
 
-Row.propTypes = {
-  index: PropTypes.number.isRequired,
-  style: PropTypes.object.isRequired,
-};
-
-export default function VirtualizedList() {
+export default function VirtualizedList(props: any) {
   const classes = useStyles();
 
   return (
