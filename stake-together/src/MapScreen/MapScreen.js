@@ -1,12 +1,12 @@
 import React from 'react';
 import Search from '../Search';
 
-function HomeScreen (onPageChange) {
+function MapScreen (onPageChange) {
     return (
         <div style = {{margin: 'auto'}}>
-            <Search onPageChange={onPageChange}/>
+            <Search/>
         </div>
     )
 }
 
-export default HomeScreen;
+export default MapScreen;

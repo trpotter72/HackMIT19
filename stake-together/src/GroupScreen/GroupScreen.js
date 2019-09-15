@@ -1,12 +1,13 @@
 import React from 'react';
 import Search from '../Search';
 
-function HomeScreen (onPageChange) {
+function GroupScreen (onPageChange) {
     return (
         <div style = {{margin: 'auto'}}>
-            <Search onPageChange={onPageChange}/>
+            Group
+            <Search/>
         </div>
     )
 }
 
-export default HomeScreen;
+export default GroupScreen;
