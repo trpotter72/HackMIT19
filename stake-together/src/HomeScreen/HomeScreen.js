@@ -3,9 +3,11 @@ import Search from '../Search';
 
 function HomeScreen (onPageChange) {
     return (
-        <div style = {{margin: 'auto'}}>
-            <Search onPageChange={onPageChange}/>
-        </div>
+        <header className="App-header">
+            <div style = {{margin: 'auto'}}>
+                <Search onPageChange={onPageChange}/>
+            </div>
+        </header>
     )
 }
 

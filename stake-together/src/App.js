@@ -8,9 +8,7 @@ function App() {
   return (
     <div className="App">
       <ButtonAppBar/>
-      <header className="App-header">
-        <ContentArea/>
-      </header>
+      <ContentArea/>
     </div>
   );
 }
