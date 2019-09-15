@@ -12,6 +12,8 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
     float: 'right',
+    paddingRight: '80px',
+    paddingTop: '40px',
   },
 }));
 
