@@ -9,10 +9,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     height: 400,
-    maxWidth: 360,
+    maxWidth: 400,
     backgroundColor: theme.palette.background.paper,
-    float: 'right',
-    paddingRight: '80px',
     paddingTop: '40px',
   },
 }));
@@ -37,7 +35,7 @@ export default function VirtualizedList() {
 
   return (
     <div className={classes.root}>
-      <FixedSizeList height={400} width={360} itemSize={46} itemCount={10}>
+      <FixedSizeList height={400} width={400} itemSize={46} itemCount={10}>
         {Row}
       </FixedSizeList>
     </div>
