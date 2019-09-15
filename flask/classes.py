@@ -1,4 +1,4 @@
-import UUID
+import uuid
 
 class House:
 
@@ -17,14 +17,14 @@ class House:
 class User:
 
     def __init__(self, username, password):
-        self.user_id = uuid4().int
+        self.user_id = uuid.uuid4()
         self.username = username
         self.password = password
 
 class Investment:
 
     def __init__(self, user_id, address, investment):
-        self.invest_id = uuid4().int
+        self.invest_id = uuid.uuid4()
         self.user_id = user_id
         self.address = address
         self.investment = investment

@@ -1,5 +1,5 @@
 import psycopg2
-from classes import House
+from classes import House, User, Investment 
 def getConnection():
     conn = psycopg2.connect(host="database-2.cjgssekceket.us-east-1.rds.amazonaws.com",
                                 port=5432,
@@ -10,7 +10,7 @@ def getConnection():
 
 def __addHouse__(h, curr):
     cmd = """ INSERT INTO house_data (address, price, bed, bath, sqft, img_url, invested, value, exp_rent, on_market)
-    VALUES ({}, {}, {}, {}, {}, {}, {}, {}, {}, {});""".format(list(*h.__dict__.values()))
+    VALUES ('{}', {}, {}, {}, {}, '{}', {}, {}, {}, {});""".format(*list(h.__dict__.values()))
     curr.execute(cmd)
 
 def addHouses(hs):
@@ -21,41 +21,82 @@ def addHouses(hs):
         for h in hs:
             __addHouse__(h, curr)
         curr.close()
-        conn.commit
+        conn.commit()
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
         if conn is not None:
             conn.close()
 
-def addInvestment(i)
+def addInvestment(i):
     conn = None
     try:
         conn = getConnection()
         curr = conn.cursor()
         cmd = """ INSERT INTO investments (invest_id, user_id, address, investment)
-            VALUES ({}, {}, {}, {});""".format(list(*i.__dict__.values()))
+            VALUES ('{}', '{}', '{}', {});""".format(*list(i.__dict__.values()))
         curr.execute(cmd)
         curr.close()
-        conn.commit
+        conn.commit()
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
         if conn is not None:
             conn.close()
 
-def addUser(u)
+def addUser(u):
     conn = None
     try:
         conn = getConnection()
         curr = conn.cursor()
-        cmd = """ INSERT INTO investments (user_id, username, pass)
-            VALUES ({}, {}, {});""".format(list(*u.__dict__.values()))
+        cmd = """ INSERT INTO users (user_id, username, pass)
+            VALUES ('{}', '{}', '{}');""".format(*list(u.__dict__.values()))
         curr.execute(cmd)
         curr.close()
-        conn.commit
+        conn.commit()
     except(Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
         if conn is not None:
             conn.close()
+
+def userExists(name):
+    conn = None
+    try:
+        conn = getConnection()
+        curr = conn.cursor()
+        cmd = "SELECT * FROM users WHERE username = '{}';".format(name)
+        curr.execute(cmd)
+        res = curr.fetchall()
+        curr.close()
+        if len(res) > 0:
+            return True
+        return False
+    except(Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+    return False
+
+def passwordMatches(name, password):
+    conn = None
+    try:
+        conn = getConnection()
+        curr = conn.cursor()
+        cmd = "SELECT pass FROM users WHERE username = '{}';".format(name)
+        curr.execute(cmd)
+        res = curr.fetchall()
+        curr.close()
+        if len(res) == 0:
+            return False
+        elif password == res[0][0]:
+            return True
+        else:
+            return False
+    except(Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+    return False
