@@ -45,8 +45,9 @@ export default function MapScreen(props: any) {
             final_bathrooms = +bathrooms
         }
 
-        let response = request.get(`http://localhost:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`)
-        console.log(response);
+        let response = request.get(`http://localhost:5000/houses/?zip_code=${props.zipCode}&radius=${final_radius}&bed=${final_bedrooms}&bath=${final_bathrooms}&price_range=${final_price_range}`, function(error, response, body) {
+            console.log(body)
+        })
     }
     
     return (
@@ -68,11 +69,11 @@ export default function MapScreen(props: any) {
 
                 <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name = "Filter by Price" onChange={e => onUpdatePriceRange(e.target.selectedOptions[0].innerHTML)}>
                     <option value = "">Filter By Price</option>
-                    <option value = "1">&#60; $1,000 </option>
-                    <option value = "2">$1,000-$5,000</option>
-                    <option value = "3">$5,000-$10,000</option>
-                    <option value = "4">$10,000-$20,000</option>
-                    <option value = "5">&#62; $20,000</option>
+                    <option value = "1">&#60; $100,000 </option>
+                    <option value = "2">$100,000-$200,000</option>
+                    <option value = "3">$200,000-$300,000</option>
+                    <option value = "4">$300,000-$400,000</option>
+                    <option value = "5">&#62; $400,000</option>
                 </select>
                 <select style={{width: '20%', float: 'left', paddingTop: '20px', paddingBottom: '20px'}} name='Bedrooms' onChange={e => {onUpdateBedrooms(e.target.selectedOptions[0].innerHTML)}}>
                     <option value = "">Bedrooms</option>

@@ -100,8 +100,8 @@ def get_houses():
     zip_code = int(request.args.get('zip_code'))
     radius = int(request.args.get('radius'))
     price_range = request.args.get('price_range')
-    bed = request.args.get('bed')
-    bath = request.args.get('bath')
+    bed = int(request.args.get('bed'))
+    bath = int(request.args.get('bath'))
 
     bounds = gmaps.get_bounds(zip_code, radius)
     return build_response(str([serialize(h) for h in zillow.get_houses(bounds, price_range, bed, bath)]), 200)
