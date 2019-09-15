@@ -10,19 +10,33 @@ function ContentArea(props: any) {
     const onUpdateZipCode = (zipCode: number) => {
       setZipCode(zipCode);
     };
+    const [address, setAddress] = useState("");
+    const onSelectAddress = (address: string) => {
+      setAddress(address);
+    };
+    const [addressData, setAddressData] = useState("");
+    const onGetAddressData = (addressData: string) => {
+      setAddressData(addressData);
+    };
 
     switch (props.pageType){
         case PageEnum.HOME:
             return(
-                <HomeScreen onPageChange={props.onPageChange} onUpdateZipCode={onUpdateZipCode}/>
+                <HomeScreen onPageChange={props.onPageChange} 
+                            onUpdateZipCode={onUpdateZipCode}/>
             );
         case PageEnum.GROUP:
             return(
-                <GroupScreen onPageChange={props.onPageChange}/>
+                <GroupScreen onPageChange={props.onPageChange}
+                             address={address}
+                             addressData={addressData}/>
             );
         case PageEnum.MAP:
             return(
-                <MapScreen onPageChange={props.onPageChange} zipCode={zipCode}/>
+                <MapScreen onPageChange={props.onPageChange} 
+                           onSelectAddress={onSelectAddress}
+                           onGetAddressData={onGetAddressData}
+                           zipCode={zipCode}/>
             );
         case PageEnum.LOGIN:
             return(
