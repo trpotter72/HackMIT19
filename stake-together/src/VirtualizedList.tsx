@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Row(props) {
+function Row(props: any) {
   const { index, style } = props;
 
   return (

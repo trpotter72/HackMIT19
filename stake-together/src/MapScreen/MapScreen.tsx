@@ -1,10 +1,11 @@
 import React from 'react';
 import Search from '../Search';
+import PageEnum from '../PageEnum'
 
-function MapScreen (onPageChange) {
+function MapScreen (props: any) {
     return (
         <div style = {{margin: 'auto'}}>
-            <Search/>
+            <Search onPageChange={props.onPageChange}/>
         </div>
     )
 }

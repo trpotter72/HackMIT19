@@ -2,8 +2,9 @@ import React from 'react';
 import NavBar from '../NavBar';
 import { Box } from '@material-ui/core';
 import VirtualizedList from '../VirtualizedList';
+import PageEnum from '../PageEnum';
 
-function GroupScreen (onPageChange) {
+function GroupScreen (props: any) {
     return (
         <div style = {{margin: 'auto'}}>
 

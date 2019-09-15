@@ -1,8 +1,9 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import PageEnum from './PageEnum'
 
-function Search (onPageChange) {
+function Search (props: any) {
     return (
         <div>
             <form className="Search" noValidate autoComplete="off" style={{float: 'left', color:'white'}}>
@@ -16,7 +17,9 @@ function Search (onPageChange) {
                     //color="white"
                 />
             </form>
-            <Button variant="contained" color="primary" style={{float: 'right', top: '50%', marginTop:'25px', marginLeft:'10px'}} /*onClick={onPageChange(PageEnum.GROUP)}*/>
+            <Button variant="contained" color="primary" style={{float: 'right', top: '50%', marginTop:'25px', marginLeft:'10px'}} onClick={(event: React.MouseEvent<HTMLElement>) => {
+ props.onPageChange(PageEnum.GROUP);
+}}>
                 Search
             </Button>
         </div>
