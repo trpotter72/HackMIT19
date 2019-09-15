@@ -1,7 +1,6 @@
 import React from 'react';
 import Search from '../Search';
 import VirtualizedList from '../VirtualizedList';
-import PageEnum from '../PageEnum'
 
 function MapScreen (props: any) {
     return (
